@@ -19,7 +19,7 @@ function Home() {
         margin: '0 auto',
       }}
     >
-      <h1>Hello {user.displayName}! </h1>
+      <h1>Hello {user.displayName}!!! </h1>
     </div>
   );
 }
