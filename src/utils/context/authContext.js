@@ -36,7 +36,6 @@ function AuthProvider(props) {
           if ('null' in gamerInfo) {
             userObj = gamerInfo;
           } else {
-            console.warn('gamer gamer', gamerInfo);
             userObj = { ...fbUser, uid: fbUser.uid, ...gamerInfo };
           }
           setUser(userObj);
