@@ -3,6 +3,8 @@ import { useAuth } from '@/utils/context/authContext';
 import Loading from '@/components/Loading';
 import SignIn from '@/components/SignIn';
 import NavBar from '@/components/NavBar';
+import Canvas from '../../components/Canvas';
+import { CanvasContextProvider } from '../../components/CanvasContext';
 
 function ViewDirectorBasedOnUserAuthStatus({ children }) {
   const { user, userLoading } = useAuth();
@@ -15,10 +17,13 @@ function ViewDirectorBasedOnUserAuthStatus({ children }) {
   // what the user should see if they are logged in
   if (user) {
     return (
-      <>
-        <NavBar /> {/* NavBar only visible if user is logged in and is in every view */}
-        {children}
-      </>
+      <CanvasContextProvider>
+        <>
+          <NavBar />
+          <Canvas />
+          {children}
+        </>
+      </CanvasContextProvider>
     );
   }
 

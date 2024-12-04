@@ -3,7 +3,6 @@
 // any component that uses useAuth needs this because if a component directly imports useAuth, it needs to be a client component since useAuth uses React hooks.
 
 import { useAuth } from '@/utils/context/authContext';
-import UserChats from '../components/UserChats';
 
 function Home() {
   const { user } = useAuth();
@@ -18,7 +17,6 @@ function Home() {
       }}
     >
       <h1>Hello {user.displayName}!!! </h1>
-      <UserChats />
     </div>
   );
 }
