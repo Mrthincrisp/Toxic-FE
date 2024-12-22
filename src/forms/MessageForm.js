@@ -2,16 +2,14 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import { useAuth } from '../utils/context/authContext';
-import { createNewMessage } from '../api/MessageCalls';
 
-export default function MessageForm({ chatId }) {
+export default function MessageForm({ chatId, sendMessage }) {
   const [messageContent, setMessageContent] = useState('');
   const { user } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const payload = { chatId, content: messageContent, userId: user.id, createdAt: new Date().toISOString() };
-    createNewMessage(payload);
+    sendMessage(messageContent, user.id, chatId);
     setMessageContent('');
   };
 
@@ -27,4 +25,5 @@ export default function MessageForm({ chatId }) {
 
 MessageForm.propTypes = {
   chatId: PropTypes.number.isRequired,
+  sendMessage: PropTypes.func.isRequired,
 };
