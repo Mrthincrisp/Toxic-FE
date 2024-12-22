@@ -5,6 +5,7 @@ import SignIn from '@/components/SignIn';
 import NavBar from '@/components/NavBar';
 import Canvas from '../../components/Canvas';
 import { CanvasContextProvider } from '../../components/CanvasContext';
+import { SignalRContextProvider } from './SignalRContext';
 
 function ViewDirectorBasedOnUserAuthStatus({ children }) {
   const { user, userLoading } = useAuth();
@@ -18,11 +19,11 @@ function ViewDirectorBasedOnUserAuthStatus({ children }) {
   if (user) {
     return (
       <CanvasContextProvider>
-        <>
+        <SignalRContextProvider>
           <NavBar />
           <Canvas />
           {children}
-        </>
+        </SignalRContextProvider>
       </CanvasContextProvider>
     );
   }
