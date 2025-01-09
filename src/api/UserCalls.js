@@ -15,6 +15,19 @@ const userLogin = (uid) =>
       .catch(reject);
   });
 
+const getAllUsers = () =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/user`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
 const checkUser = (uid) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/user/check/${uid}`, {
@@ -52,4 +65,4 @@ const registerUser = (userInfo) =>
       .catch(reject);
   });
 
-export { userLogin, registerUser, checkUser };
+export { userLogin, registerUser, checkUser, getAllUsers };

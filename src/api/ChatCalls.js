@@ -42,4 +42,17 @@ const createNewChat = (payload, id) =>
       .catch(reject);
   });
 
-export { getSingleChat, getUserChats, createNewChat };
+const deleteUserFromChat = (userId, chatId) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/userchat/user/${userId}/chat/${chatId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+export { getSingleChat, getUserChats, createNewChat, deleteUserFromChat };

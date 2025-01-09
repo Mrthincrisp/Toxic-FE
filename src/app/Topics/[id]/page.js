@@ -6,7 +6,7 @@ import { getCategoryTopics } from '../../../api/TopicCalls';
 
 export default function CategoryTopics({ params }) {
   const { id } = params;
-  const [topics, setTopics] = useState();
+  const [topics, setTopics] = useState([]);
 
   useEffect(() => {
     getCategoryTopics(id).then(setTopics);
@@ -17,6 +17,6 @@ export default function CategoryTopics({ params }) {
 
 CategoryTopics.propTypes = {
   params: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number,
   }).isRequired,
 };
