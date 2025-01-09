@@ -8,6 +8,7 @@ const getChatMessages = (id) =>
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
       },
     })
       .then((response) => response.json())
@@ -29,4 +30,31 @@ const createNewMessage = (payload) =>
       .catch(reject);
   });
 
-export { getChatMessages, createNewMessage };
+const deleteMessage = (id) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/message/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+const editMessage = (id, payload) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/message/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+export { getChatMessages, createNewMessage, deleteMessage, editMessage };

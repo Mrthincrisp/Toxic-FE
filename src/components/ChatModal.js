@@ -11,27 +11,31 @@ export default function ChatModal({ chat, show, onClose }) {
   const [loading, setLoading] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
 
+  const refreshMessages = async () => {
+    setLoading(true);
+    const fetchedMessages = await getChatMessages(chat.id);
+    const sortedMessages = fetchedMessages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+    setChatMessages(sortedMessages);
+    setLoading(false);
+  };
+
   useEffect(() => {
     if (show) {
-      setLoading(true); // Set loading to true when fetching messages
-      getChatMessages(chat.id).then((fetchedMessages) => {
-        setChatMessages(fetchedMessages);
-        setLoading(false); // Set loading to false once messages are fetched
-      });
-
-      // Join chat when modal is shown
+      refreshMessages();
       joinChat(chat.id);
     } else {
-      setChatMessages([]); // Clear messages when modal is hidden
+      setChatMessages([]);
     }
   }, [show, chat.id]);
 
   useEffect(() => {
-    // This effect listens for new messages in the SignalR context
-    // When a new message arrives, update the messages state
     if (messages.length > 0) {
-      console.warn('message', messages);
-      setChatMessages((prevMessages) => [...prevMessages, ...messages]);
+      setChatMessages((prevMessages) => {
+        const newMessages = messages.filter((newMessage) => !prevMessages.some((msg) => msg.id === newMessage.id));
+
+        return [...prevMessages, ...newMessages].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      });
       clearMessages();
     }
   }, [messages]);
@@ -41,7 +45,7 @@ export default function ChatModal({ chat, show, onClose }) {
       <Modal.Header closeButton>
         <Modal.Title>{chat.name}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{loading ? <div>Loading...</div> : chatMessages.map((message) => <Message key={message.id} message={message} />)}</Modal.Body>
+      <Modal.Body>{loading ? <div>Loading...</div> : chatMessages.map((message) => <Message key={message.id} message={message} refreshMessages={refreshMessages} />)}</Modal.Body>
       <Modal.Footer>
         <MessageForm chatId={chat.id} sendMessage={sendMessage} />
       </Modal.Footer>
